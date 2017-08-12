@@ -143,7 +143,7 @@ public class WalkingActivity extends Activity implements CvCameraViewListener2 {
         setContentView(R.layout.walking_layout);
 
         mOpenCvCameraView = (JavaCameraView) findViewById(R.id.java_camera_view);
-        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
+        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
@@ -190,8 +190,8 @@ public class WalkingActivity extends Activity implements CvCameraViewListener2 {
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
         //横屏
-        Core.flip(mRgba, mRgba, 1);
-        Core.flip(mGray, mGray, 1);
+   /*     Core.flip(mRgba, mRgba, 1);
+        Core.flip(mGray, mGray, 1);*/
        /* if (mAbsoluteFaceSize == 0) {
             int width = mGray.cols();
             int height = mGray.rows();
@@ -207,7 +207,7 @@ public class WalkingActivity extends Activity implements CvCameraViewListener2 {
 
         if (mDetectorType == JAVA_DETECTOR) {
             if (mHOGDescriptor != null) {
-                /*double hitThreshold = 0;
+                double hitThreshold = 0;
                 double scale = 1.05, finalThreshold = 2;
                 boolean useMeanShiftGrouping = false;
                 final Size winStride = new Size(8, 8);
@@ -216,8 +216,8 @@ public class WalkingActivity extends Activity implements CvCameraViewListener2 {
                 mHOGDescriptor.detectMultiScale(mGray, foundLocations,
                         foundWeights, hitThreshold,
                         winStride, padding, scale,
-                        finalThreshold, useMeanShiftGrouping);*/
-                mHOGDescriptor.detectMultiScale(mGray, foundLocations, foundWeights);
+                        finalThreshold, useMeanShiftGrouping);
+               /* mHOGDescriptor.detectMultiScale(mGray, foundLocations, foundWeights);*/
                 if (foundLocations.rows() > 0) {
                     Rect[] facesArray = foundLocations.toArray();
                     final int len = facesArray.length;

@@ -54,7 +54,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private float mRelativeFaceSize = 0.2f;
     private int mAbsoluteFaceSize = 0;
-
+    private int mAbsoluteHeight = 0;
+    private int mAbsoluteWidth = 0;
     private CameraBridgeViewBase mOpenCvCameraView;
 
 
@@ -73,9 +74,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                     Log.d(TAG, "初始化：" + new ExtraTest().stringFromJNI());
                     try {
                         // load cascade file from application resources
-                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                        InputStream is = getResources().openRawResource(R.raw.haarcascade_fullbody);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+                        mCascadeFile = new File(cascadeDir, "haarcascade_fullbody.xml");
                         FileOutputStream os = new FileOutputStream(mCascadeFile);
 
                         byte[] buffer = new byte[4096];
@@ -134,7 +135,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
-        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
+        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
@@ -177,12 +178,15 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
         //横屏
-        Core.flip(mRgba, mRgba, 1);
-        Core.flip(mGray, mGray, 1);
+       /* Core.flip(mRgba, mRgba, 1);
+        Core.flip(mGray, mGray, 1);*/
         if (mAbsoluteFaceSize == 0) {
+            int width = mGray.cols();
             int height = mGray.rows();
             if (Math.round(height * mRelativeFaceSize) > 0) {
                 mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+                mAbsoluteWidth = Math.round(width * mRelativeFaceSize);
+                mAbsoluteHeight = Math.round(height * mRelativeFaceSize);
             }
             mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
         }
@@ -192,7 +196,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         if (mDetectorType == JAVA_DETECTOR) {
             if (mJavaDetector != null)
                 mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+                        new Size(mAbsoluteWidth, mAbsoluteHeight), new Size());
+               /* mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());*/
         } else if (mDetectorType == NATIVE_DETECTOR) {
             if (mNativeDetector != null)
                 mNativeDetector.detect(mGray, faces);
