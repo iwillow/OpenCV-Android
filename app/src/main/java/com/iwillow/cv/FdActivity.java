@@ -70,7 +70,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                     // System.loadLibrary("detection_based_tracker");
                     System.loadLibrary("opencv_java3");
                     System.loadLibrary("opencv_java");
-                    System.loadLibrary("native-lib");
+                    System.loadLibrary("object_detect");
                     Log.d(TAG, "初始化：" + new ExtraTest().stringFromJNI());
                     try {
                         // load cascade file from application resources

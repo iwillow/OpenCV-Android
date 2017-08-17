@@ -74,7 +74,7 @@ public class WalkingActivity extends Activity implements CvCameraViewListener2 {
                     // Load native library after(!) OpenCV initialization
                     System.loadLibrary("opencv_java3");
                     System.loadLibrary("opencv_java");
-                    System.loadLibrary("native-lib");
+                    System.loadLibrary("object_detect");
                     Log.d(TAG, "初始化：" + new ExtraTest().stringFromJNI());
 
                     try {

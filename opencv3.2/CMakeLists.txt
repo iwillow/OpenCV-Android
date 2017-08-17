@@ -94,13 +94,13 @@ set_target_properties(libopencv_ts PROPERTIES
 
 
 add_library( # Sets the name of the library.
-             native-lib
+             object_detect
 
              # Sets the library as a shared library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             src/main/cpp/native-lib.cpp )
+             src/main/cpp/object_detect.cpp )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -120,7 +120,7 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       native-lib
+                       object_detect
                        libopencv_java3 libopencv_java libopencv_calib3d libopencv_core libopencv_features2d libopencv_flann libopencv_highgui libopencv_imgcodecs
                        libopencv_imgproc libopencv_ml libopencv_objdetect libopencv_photo libopencv_shape libopencv_stitching libopencv_superres
                        libopencv_video libopencv_videoio libopencv_videostab
