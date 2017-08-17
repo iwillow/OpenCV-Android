@@ -182,13 +182,13 @@ Java_org_opencv_face_DetectionBasedTracker_nativeStop(JNIEnv *env, jclass type, 
 
 JNIEXPORT void JNICALL
 Java_org_opencv_face_DetectionBasedTracker_nativeSetFaceSize(JNIEnv *env, jclass type, jlong thiz,
-                                                             jint faceSize) {
+                                                             jint width, jint height) {
 
     LOGD("Java_org_opencv_face_facedetect_DetectionBasedTracker_nativeSetFaceSize -- BEGIN");
 
     try {
-        if (faceSize > 0) {
-            ((DetectorAgregator *) thiz)->mainDetector->setMinObjectSize(Size(faceSize, faceSize));
+        if (width > 0 && height > 0) {
+            ((DetectorAgregator *) thiz)->mainDetector->setMinObjectSize(Size(width, height));
             //((DetectorAgregator*)thiz)->trackingDetector->setMinObjectSize(Size(faceSize, faceSize));
         }
     }

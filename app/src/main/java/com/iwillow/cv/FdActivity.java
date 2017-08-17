@@ -77,6 +77,11 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                         InputStream is = getResources().openRawResource(R.raw.haarcascade_fullbody);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
                         mCascadeFile = new File(cascadeDir, "haarcascade_fullbody.xml");
+                       /* InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");*/
+
+
                         FileOutputStream os = new FileOutputStream(mCascadeFile);
 
                         byte[] buffer = new byte[4096];
@@ -188,7 +193,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 mAbsoluteWidth = Math.round(width * mRelativeFaceSize);
                 mAbsoluteHeight = Math.round(height * mRelativeFaceSize);
             }
-            mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
+            //mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
+            mNativeDetector.setMinFaceSize(mAbsoluteWidth, mAbsoluteHeight);
         }
 
         MatOfRect faces = new MatOfRect();
