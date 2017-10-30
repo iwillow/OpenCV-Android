@@ -49,7 +49,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     private CascadeClassifier mJavaDetector;
     private DetectionBasedTracker mNativeDetector;
 
-    private int mDetectorType = JAVA_DETECTOR;
+    private int mDetectorType = NATIVE_DETECTOR;
     private String[] mDetectorName;
 
     private float mRelativeFaceSize = 0.2f;
@@ -135,7 +135,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
-        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);
+        mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);//后置摄像头
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
@@ -177,8 +177,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
-        //横屏
-       /* Core.flip(mRgba, mRgba, 1);
+      /*  Core.flip(mRgba, mRgba, 1);
         Core.flip(mGray, mGray, 1);*/
         if (mAbsoluteFaceSize == 0) {
             int width = mGray.cols();
@@ -188,7 +187,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 mAbsoluteWidth = Math.round(width * mRelativeFaceSize);
                 mAbsoluteHeight = Math.round(height * mRelativeFaceSize);
             }
-            mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
+            mNativeDetector.setMinFaceSize(mAbsoluteWidth,mAbsoluteHeight);
         }
 
         MatOfRect faces = new MatOfRect();
