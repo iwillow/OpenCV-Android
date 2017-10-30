@@ -74,9 +74,20 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                     Log.d(TAG, "初始化：" + new ExtraTest().stringFromJNI());
                     try {
                         // load cascade file from application resources
+
+                        //人脸识别
+                      /*
+                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+                        */
+
+
+                        //人形识别
                         InputStream is = getResources().openRawResource(R.raw.haarcascade_fullbody);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
                         mCascadeFile = new File(cascadeDir, "haarcascade_fullbody.xml");
+
                         FileOutputStream os = new FileOutputStream(mCascadeFile);
 
                         byte[] buffer = new byte[4096];
@@ -136,6 +147,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);//后置摄像头
+        //前置摄像头
+        // mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
         mOpenCvCameraView.setCvCameraViewListener(this);
     }
 
@@ -174,11 +187,15 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
-      /*  Core.flip(mRgba, mRgba, 1);
-        Core.flip(mGray, mGray, 1);*/
+
+       //如果是前置摄像头，将下面的代码反注释掉
+       /*
+           Core.flip(mRgba, mRgba, 1);
+           Core.flip(mGray, mGray, 1);
+        */
+
         if (mAbsoluteFaceSize == 0) {
             int width = mGray.cols();
             int height = mGray.rows();
@@ -187,7 +204,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 mAbsoluteWidth = Math.round(width * mRelativeFaceSize);
                 mAbsoluteHeight = Math.round(height * mRelativeFaceSize);
             }
-            mNativeDetector.setMinFaceSize(mAbsoluteWidth,mAbsoluteHeight);
+            mNativeDetector.setMinFaceSize(mAbsoluteWidth, mAbsoluteHeight);
         }
 
         MatOfRect faces = new MatOfRect();
