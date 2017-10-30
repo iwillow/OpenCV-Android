@@ -70,7 +70,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                     // System.loadLibrary("detection_based_tracker");
                     System.loadLibrary("opencv_java3");
                     System.loadLibrary("opencv_java");
-                    System.loadLibrary("native-lib");
+                    System.loadLibrary("object_detect");
                     Log.d(TAG, "初始化：" + new ExtraTest().stringFromJNI());
                     try {
                         // load cascade file from application resources
@@ -87,6 +87,11 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                         InputStream is = getResources().openRawResource(R.raw.haarcascade_fullbody);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
                         mCascadeFile = new File(cascadeDir, "haarcascade_fullbody.xml");
+
+                       /* InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");*/
+
 
                         FileOutputStream os = new FileOutputStream(mCascadeFile);
 
